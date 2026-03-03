@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikarabad Earth Projects | Premium Land Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --emerald: #064E3B; --obsidian: #0F172A; --alabaster: #F8FAFC; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--alabaster); color: var(--obsidian); }
+        .serif { font-family: 'Playfair Display', serif; }
+        
+        section { scroll-margin-top: 120px; }
+
+        /* Enhanced Hero - Optimized Orientation */
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.3)), url('image-1.jpg');
+            background-size: cover; 
+            background-position: center 30%; /* Refined to ensure the ridge stays visible */
+            background-attachment: fixed; z-index: -1;
+        }
+
+        /* Glassmorphism Header */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .terrain-card { overflow: hidden; position: relative; border-radius: 1.5rem; cursor: crosshair; }
+        .terrain-img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
+        .terrain-card:hover .terrain-img { transform: scale(1.1); }
+        .terrain-overlay { 
+            background: linear-gradient(to top, rgba(6, 78, 59, 0.9) 0%, rgba(6, 78, 59, 0.4) 40%, transparent 100%); 
+            opacity: 0; transition: 0.4s ease; 
+        }
+        .terrain-card:hover .terrain-overlay { opacity: 1; }
+
+        /* Premium Social Hover */
+        .social-link { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid #e2e8f0;
+        }
+        .social-link:hover { background: var(--emerald); color: white; border-color: var(--emerald); transform: translateY(-5px); }
+
+        /* Sticky Form Handling */
+        .sticky-box { transition: transform 0.1s linear; }
+
+        /* Navigation indicator classes */
+        .nav-active { color: var(--emerald) !important; }
+        .nav-active span { width: 100% !important; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero-bg { background-attachment: scroll; }
+            .hero-h1 { font-size: 4rem; }
+        }
+
+        /* New: Suggestions Overlay Styling */
+        .landmark-card { transition: all 0.5s ease; border-right: 1px solid #f1f5f9; padding: 0 2rem; }
+        .landmark-card:last-child { border: none; }
+        .landmark-card:hover { transform: translateY(-5px); opacity: 1 !important; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <nav class="fixed w-full z-[100] px-6 lg:px-16 py-4 nav-glass flex justify-between items-center">
+        <div class="flex items-center gap-6">
+            <div class="flex flex-col cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <span class="serif font-bold text-2xl tracking-[0.1em] uppercase text-emerald-900 leading-none">The Earth Projects</span>
+                <span class="text-[8px] uppercase tracking-[0.6em] text-emerald-600 font-bold mt-1">Vikarabad Portfolio</span>
+            </div>
+            <div class="hidden lg:block h-8 w-px bg-slate-200"></div>
+            <div class="hidden lg:flex flex-col">
+                <span class="text-[9px] uppercase font-bold text-slate-400 tracking-widest">Current Location</span>
+                <span id="dynamic-location" class="text-[11px] font-semibold text-emerald-900">Ridge Road, 920m Elevation</span>
+            </div>
+        </div>
+        
+        <div id="main-nav" class="hidden lg:flex space-x-12 text-[10px] uppercase tracking-widest font-bold text-slate-600">
+            <a href="#connectivity" class="nav-link hover:text-emerald-700 transition relative group">Access<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
+            <a href="#terrain" class="nav-link hover:text-emerald-700 transition relative group">Terroir<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
+            <a href="#location" class="nav-link hover:text-emerald-700 transition relative group">Map<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
+            <a href="#inventory" class="nav-link hover:text-emerald-700 transition relative group">Pricing<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="hidden md:block text-[9px] uppercase font-bold tracking-widest text-emerald-900 border border-emerald-900 px-5 py-2 hover:bg-emerald-50 transition">Master Plan</button>
+            <button onclick="document.getElementById('inquiryForm').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-900 text-white px-7 py-2.5 text-[10px] uppercase font-bold tracking-widest hover:bg-slate-900 transition-all shadow-xl">Acquire</button>
+        </div>
+    </nav>
+
+    <header id="hero-header" class="relative h-[90vh] flex items-center justify-center overflow-hidden">
+        <div class="hero-bg"></div>
+        <div class="relative z-10 text-center px-6">
+            <div class="inline-flex items-center gap-3 mb-8 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span class="text-white text-[9px] uppercase tracking-[0.3em] font-medium">Biophillic | Sustainable Residential Project | Nature Getaway</span>
+            </div>
+            <h1 class="text-6xl md:text-9xl serif text-white mb-8 leading-none hero-h1">The Earth Projects<br><span class="italic font-light text-emerald-50">Legacy.</span></h1>
+            <p class="text-emerald-50/80 text-xs md:text-sm max-w-lg mx-auto leading-relaxed mb-10 tracking-wide font-light">Owning a Piece of the Highest Ridge on the Deccan Plateau—Where the Air is Pure and The Wealth is Permanent.</p>
+            <div class="flex justify-center gap-12 text-white/60 text-[10px] uppercase tracking-[0.4em] font-bold">
+                <div class="flex flex-col items-center"><span>920m</span><span class="text-[8px] font-normal opacity-50 mt-1">Altitude</span></div>
+                <div class="flex flex-col items-center"><span>12 KM</span><span class="text-[8px] font-normal opacity-50 mt-1">From RRR</span></div>
+                <div class="flex flex-col items-center"><span>Pure</span><span class="text-[8px] font-normal opacity-50 mt-1">Air Index</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 lg:px-12 py-32">
+        <div class="flex flex-col lg:flex-row gap-20">
+            
+            <div class="lg:w-2/3 space-y-40">
+                
+                <section id="connectivity" class="fade-up">
+                    <h2 class="text-4xl md:text-7xl serif mb-12 italic text-emerald-900">Strategic Access.</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="p-10 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-xl transition-shadow">
+                            <h4 class="text-emerald-900 font-bold text-[10px] uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Regional Proximity
+                            </h4>
+                            <ul class="space-y-6 text-sm text-slate-500">
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>Outer Ring Road</span> <span class="font-bold text-emerald-800 tracking-tighter">45 Mins</span></li>
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>DPS School</span> <span class="font-bold text-emerald-800 tracking-tighter">15 Mins</span></li>
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>Ananthagiri Hills</span> <span class="font-bold text-emerald-800 tracking-tighter">10 Mins</span></li>
+                            </ul>
+                        </div>
+                        <div class="p-10 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-xl transition-shadow">
+                            <h4 class="text-emerald-900 font-bold text-[10px] uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Civic Nodes
+                            </h4>
+                            <ul class="space-y-6 text-sm text-slate-500">
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>Regional Ring Road</span> <span class="font-bold text-emerald-800 tracking-tighter">12 KM</span></li>
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>Area Hospital</span> <span class="font-bold text-emerald-800 tracking-tighter">12 Mins</span></li>
+                                <li class="flex justify-between border-b border-slate-50 pb-3"><span>Collectorate Office</span> <span class="font-bold text-emerald-800 tracking-tighter">08 Mins</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="terrain" class="fade-up">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="h-px w-16 bg-emerald-800"></div>
+                        <span class="text-[11px] uppercase tracking-[0.5em] font-bold text-emerald-800">Geographical Terroir</span>
+                    </div>
+                    
+                    <div class="grid lg:grid-cols-2 gap-16 mb-20">
+                        <div>
+                            <h2 class="text-4xl md:text-7xl serif mb-10 italic">The Ridge.</h2>
+                            <p class="text-slate-600 leading-relaxed text-lg font-light italic">
+                                "The Earth Projects Terroir is defined by its deep red laterite soil—porous, mineral-rich, and perfectly drained. This is where nature meets legacy investment."
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="p-8 bg-emerald-900 text-white rounded-[2rem] text-center">
+                                <span class="block text-[9px] uppercase font-bold text-emerald-300 mb-3 tracking-widest">Altitude</span>
+                                <span class="serif text-3xl">920m</span>
+                                <span class="serif text-3xl">Climate Air</span>
+                            </div>
+                            <div class="p-8 bg-emerald-50 border border-emerald-100 rounded-[2rem] text-center">
+                                <span class="block text-[9px] uppercase font-bold text-emerald-900 mb-3 tracking-widest">Soil Type</span>
+                                <span class="serif text-3xl text-emerald-800">Laterite</span>
+                                <span class="serif text-3xl text-emerald-800">Fertility Stability</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="terrain-card h-[500px] md:col-span-2 shadow-2xl">
+                            <img src="image_1.png" class="terrain-img" alt="Main Ridge">
+                            <div class="terrain-overlay absolute inset-0 flex flex-col justify-end p-12">
+                                <h4 class="text-white serif text-3xl mb-2">The Great Ridge</h4>
+                                <p class="text-white/80 text-[11px] uppercase tracking-[0.4em] font-medium">Primary elevation spanning the entire phase</p>
+                            </div>
+                        </div>
+                        <div class="terrain-card h-[350px]">
+                            <img src="image_2.jpeg" class="terrain-img" alt="Sunset">
+                            <div class="terrain-overlay absolute inset-0 flex flex-col justify-end p-8">
+                                <h4 class="text-white serif text-xl mb-1">Golden Hour</h4>
+                                <p class="text-white/80 text-[10px] uppercase tracking-widest">Infinite Western Horizon</p>
+                            </div>
+                        </div>
+                        <div class="terrain-card h-[350px]">
+                            <img src="image_3.png" class="terrain-img" alt="Greenery">
+                            <div class="terrain-overlay absolute inset-0 flex flex-col justify-end p-8">
+                                <h4 class="text-white serif text-xl mb-1">Valleys</h4>
+                                <p class="text-white/80 text-[10px] uppercase tracking-widest">Organic-Rich Soil Base</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="location" class="fade-up">
+                    <div class="flex justify-between items-end mb-12">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-[0.5em] font-bold text-emerald-800 mb-2 block">Map Coordinates</span>
+                            <h3 class="text-4xl md:text-6xl serif italic text-emerald-900">Live Location.</h3>
+                        </div>
+                        <a href="https://goo.gl/maps/uC5E6H7XyX62" target="_blank" class="px-8 py-4 rounded-full bg-emerald-900 text-white text-[10px] uppercase font-bold tracking-widest hover:bg-black transition-all">Navigate</a>
+                    </div>
+                    <div class="w-full h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121852.12871465243!2d77.818449635031!3d17.369528659632863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc95f6f32e4d0cb%3A0xc398f6d3f2a1b9c7!2sVikarabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin2" 
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:w-1/3 relative">
+                <div class="lg:sticky lg:top-32 bg-white p-12 rounded-[2.5rem] border border-slate-100 shadow-2xl sticky-box">
+                    <div id="formWrapper">
+                        <h3 class="serif text-4xl italic text-emerald-900 mb-2">Book Tour.</h3>
+                        <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-10">Request a Private Site Visit</p>
+                        
+                        <form id="inquiryForm" class="space-y-8">
+                            <div class="relative group">
+                                <input type="text" placeholder="Full Name" required class="w-full bg-transparent border-b border-slate-200 py-4 text-sm focus:border-emerald-800 outline-none transition-all group-hover:border-slate-400">
+                            </div>
+                            <div class="relative group">
+                                <input type="tel" id="phone" placeholder="Mobile Number" required class="w-full bg-transparent border-b border-slate-200 py-4 text-sm focus:border-emerald-800 outline-none transition-all group-hover:border-slate-400">
+                                <p id="phoneError" class="text-red-500 text-[10px] hidden mt-1 italic">Valid 10-digit number required</p>
+                            </div>
+                            <div>
+                                <label class="text-[9px] uppercase font-bold text-emerald-900 mb-2 block">Site Visit Date</label>
+                                <input type="date" id="visitDate" required class="w-full bg-slate-50 border-none rounded-xl px-4 py-4 text-sm outline-none text-slate-500">
+                            </div>
+                            <div>
+                                <label class="text-[9px] uppercase font-bold text-emerald-900 mb-2 block">Preferred Size</label>
+                                <select required class="w-full bg-slate-50 border-none rounded-xl px-4 py-4 text-sm outline-none text-slate-600 appearance-none">
+                                    <option value="" disabled selected>Select Area</option>
+                                    <option value="0.5">1/2 Acre Boutique</option>
+                                    <option value="1">1 Acre Legacy</option>
+                                    <option value="bulk">Bulk Institution Block</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-emerald-900 text-white py-6 rounded-2xl text-[11px] uppercase font-bold tracking-[0.4em] hover:bg-black transition-all shadow-xl hover:shadow-2xl">Confirm Appointment</button>
+                        </form>
+                    </div>
+                    <div id="successView" class="hidden text-center py-10">
+                        <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h4 class="serif text-3xl italic mb-3">Confirmed.</h4>
+                        <p class="text-sm text-slate-500">Our concierge will contact you shortly to coordinate the route.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <section id="inventory" class="bg-slate-900 py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-24">
+                <span class="text-emerald-400 text-[10px] uppercase tracking-[0.6em] font-bold block mb-4">Pricing & Allocation</span>
+                <h2 class="text-white serif text-5xl md:text-7xl italic">Investment Portfolio.</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="group p-12 border border-white/10 rounded-[3rem] text-center text-white flex flex-col justify-between hover:border-emerald-500/50 transition-all duration-500 bg-white/5">
+                    <div>
+                        <h4 class="serif text-2xl mb-6">Boutique Half-Acre</h4>
+                        <div class="text-5xl font-light mb-10 italic">₹75 <span class="text-base opacity-40 uppercase tracking-widest">Lakhs</span></div>
+                        <div class="space-y-4 mb-12">
+                            <p class="text-[15px] uppercase tracking-widest text-slate-400">Starting Size</p>
+                            <p class="text-[15px] uppercase tracking-widest text-slate-400">Zero Litigaton</p>
+                            <p class="text-[20px] lowercase tracking-widest text-emerald-400">on Spot Registration</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/919182127690?text=Hello,%20I%20am%20interested%20in%20the%20Half%20Acre%20Boutique%20plot%20priced%20at%2079L%20at%20The%20Earth@20Projects." target="_blank" class="w-full py-5 border border-white/20 rounded-2xl text-[10px] uppercase font-bold tracking-[0.3em] group-hover:bg-white group-hover:text-black transition-all">Inquire Now</a>
+                </div>
+
+                <div class="group p-12 bg-emerald-900 rounded-[3rem] text-center text-white shadow-3xl scale-105 border border-emerald-700 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10">
+                        
+                    </div>
+                    <div>
+                        <div class="inline-block px-5 py-2 bg-emerald-800 rounded-full text-[9px] tracking-[0.3em] uppercase mb-8 font-bold">Primary Holding</div>
+                        <h4 class="serif text-2xl mb-6 italic font-bold">Legacy Full-Acre</h4>
+                        <div class="text-5xl font-light mb-10 italic">₹1.5 <span class="text-base opacity-40 uppercase tracking-widest">Crore</span></div>
+                        <div class="space-y-4 mb-12">
+                            <p class="text-[15px] uppercase tracking-widest text-emerald-200">Clear Title</p>
+                            <p class="text-[18px] uppercase tracking-widest text-emerald-200">Ridge-Front Allocation</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/919949203614?text=Hello,%20I%20would%20like%20to%20discuss%20the%201%20Acre%20Legacy%20plot%20allocation." target="_blank" class="w-full py-5 bg-white text-emerald-900 rounded-2xl text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-emerald-50 transition-all shadow-xl">Reach Out</a>
+                </div>
+
+                <div class="group p-12 border border-white/10 rounded-[3rem] text-center text-white flex flex-col justify-between hover:border-emerald-500/50 transition-all duration-500 bg-white/5">
+                    <div>
+                        <h4 class="serif text-2xl mb-6">Bulk Blocks</h4>
+                        <div class="text-5xl font-light mb-10 italic">Custom <span class="text-base opacity-40 uppercase tracking-widest">Pricing</span></div>
+                        <div class="space-y-4 mb-12">
+                            <p class="text-[15px] uppercase tracking-widest text-slate-400">Institutional Inquiries</p>
+                            <p class="text-[15px] uppercase tracking-widest text-slate-400">Available upto 25 Acres</p>
+                            <p class="text-[20px] uppercase tracking-widest text-emerald-400">Exclusive Boundary Options</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/919949939980?text=I'm%20interested%20in%20a%20Bulk%20Block%20acquisition%20at%20The%20Earth%20Projects." target="_blank" class="w-full py-5 border border-white/20 rounded-2xl text-[10px] uppercase font-bold tracking-[0.3em] group-hover:bg-white group-hover:text-black transition-all">Request Proposal</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-white py-20 border-t border-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-[9px] uppercase tracking-[0.5em] font-bold text-center text-slate-400 mb-12">Strategic Neighborhood Nodes</p>
+            <div class="flex flex-wrap justify-center gap-y-12">
+                <div class="landmark-card opacity-60">
+                    <span class="serif text-2xl text-emerald-900">Ananthagiri</span>
+                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">ECO-RESERVE</span>
+                </div>
+                <div class="landmark-card opacity-60">
+                    <span class="serif text-2xl text-emerald-900">RRR Phase 1</span>
+                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">INFRA-CORRIDOR</span>
+                </div>
+                <div class="landmark-card opacity-60">
+                    <span class="serif text-2xl text-emerald-900">Kotepally</span>
+                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">KAYAKING DESTINATION</span>
+                </div>
+                <div class="landmark-card opacity-60">
+                    <span class="serif text-2xl text-emerald-900">Belvedere</span>
+                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">LUXURY RESORT</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-100 pt-32 pb-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid md:grid-cols-4 gap-20 mb-24">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="serif font-bold text-3xl tracking-tighter uppercase text-emerald-900 mb-8">The Earth Projects.</div>
+                    <p class="text-slate-500 text-sm italic leading-relaxed max-w-sm mb-10">Telangana’s highest elevation residential land portfolio. A definitive statement in generational wealth and ecological stewardship.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="social-link"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        <a href="#" class="social-link"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                        <a href="#" class="social-link"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                        <a href="https://wa.me/919949203614" class="social-link"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.004c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <h5 class="text-[10px] uppercase font-bold text-emerald-900 tracking-[0.4em]">Portfolio</h5>
+                    <ul class="text-sm text-slate-500 space-y-4 font-light">
+                        <li><a href="#connectivity" class="hover:text-emerald-900 transition">Route & Access</a></li>
+                        <li><a href="#terrain" class="hover:text-emerald-900 transition">Terroir Profile</a></li>
+                        <li><a href="#inventory" class="hover:text-emerald-900 transition">Our Inventory</a></li>
+                        <li><button class="hover:text-emerald-900 transition">Master Layout PDF</button></li>
+                    </ul>
+                </div>
+                <div class="space-y-6">
+                    <h5 class="text-[10px] uppercase font-bold text-emerald-900 tracking-[0.4em]">Concierge</h5>
+                    <p class="text-sm text-slate-500 font-light">+91 99492 03614<br>adn.hydprojects@gmail.com</p>
+                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tighter">Office:<br>144 Survey 37, Financial District,<br> Nanakramguda, Hyderabad, <br>Telangana 500032</p>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-100 gap-6">
+                <p class="text-[9px] uppercase tracking-[0.4em] font-bold text-slate-400">© 2026 The Earth Projects Portfolio | AN ADN Initiative</p>
+                <div class="flex gap-8 text-[9px] uppercase tracking-[0.2em] font-bold text-slate-400">
+                    <a href="#" class="hover:text-emerald-900 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-emerald-900 transition">RERA Documentation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const injectEnvironmentData = () => {
+            const heroText = document.querySelector('#hero-header p');
+            const envDiv = document.createElement('div');
+            envDiv.className = "flex gap-6 mt-8 justify-center";
+            envDiv.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
+                    <span class="text-[10px] text-white/70 uppercase tracking-[0.2em] font-bold">Live AQI: 38 (Excellent)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                    <span class="text-[10px] text-white/70 uppercase tracking-[0.2em] font-bold">Temp: 22°C Misty</span>
+                </div>
+            `;
+            heroText.parentNode.insertBefore(envDiv, heroText.nextSibling);
+        };
+        window.addEventListener('DOMContentLoaded', injectEnvironmentData);
+    </script>
+
+    <script>
+        // Force scroll to top on page load/refresh
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0,0);
+
+        // Navigation Highlight (Scroll Spy)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const locDisplay = document.getElementById('dynamic-location');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) { current = section.getAttribute('id'); }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('nav-active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('nav-active');
+                }
+            });
+
+            // Dynamic Location Text
+            if (current === 'connectivity') locDisplay.innerText = 'Ridge Access Points';
+            else if (current === 'terrain') locDisplay.innerText = 'The Earth Projects Terroir';
+            else if (current === 'location') locDisplay.innerText = '920m Elevation Map';
+            else if (current === 'inventory') locDisplay.innerText = 'Portfolio Allocation';
+            else locDisplay.innerText = 'Ridge Road, 920m Elevation';
+        });
+
+        // Form Logic
+        const dateInput = document.getElementById('visitDate');
+        if(dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+
+        document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('phone');
+            const error = document.getElementById('phoneError');
+            if(!/^[0-9]{10}$/.test(phone.value.trim())) {
+                error.classList.remove('hidden');
+                phone.classList.add('border-red-500');
+                return;
+            }
+            document.getElementById('formWrapper').classList.add('hidden');
+            document.getElementById('successView').classList.remove('hidden');
+        });
+
+        // Smart Sticky Behavior
+        const asideBox = document.querySelector('.sticky-box');
+        const footerElement = document.querySelector('footer');
+
+        window.addEventListener('scroll', () => {
+            const footerTop = footerElement.getBoundingClientRect().top;
+            const asideHeight = asideBox.offsetHeight;
+            const threshold = asideHeight + 150; 
+
+            if (footerTop < threshold) {
+                const diff = threshold - footerTop;
+                asideBox.style.transform = `translateY(-${diff}px)`;
+            } else {
+                asideBox.style.transform = `translateY(0)`;
+            }
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+
+    <script>
+        const form = document.getElementById('inquiryForm');
+        const inputs = form.querySelectorAll('div.relative, div:has(label)');
+        
+        // Hide later steps initially to create a 'guided' feel
+        inputs.forEach((input, index) => {
+            if(index > 0) {
+                input.style.display = 'none';
+                input.style.opacity = '0';
+                input.style.transition = 'opacity 0.5s ease';
+            }
+        });
+
+        // Reveal next steps as the user interacts
+        form.addEventListener('input', (e) => {
+            const currentDiv = e.target.closest('div.relative') || e.target.closest('div:has(label)');
+            if (currentDiv) {
+                const nextInput = currentDiv.nextElementSibling;
+                if(nextInput && nextInput.tagName !== 'BUTTON') {
+                    nextInput.style.display = 'block';
+                    setTimeout(() => nextInput.style.opacity = '1', 50);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
