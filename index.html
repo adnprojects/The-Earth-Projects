@@ -14,12 +14,12 @@
         
         section { scroll-margin-top: 120px; }
 
-        /* Enhanced Hero - Optimized Orientation */
+        /* FIX: Optimized Hero for iMac/Laptop Orientation */
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.3)), url('image-1.jpg');
             background-size: cover; 
-            background-position: center 30%; /* Refined to ensure the ridge stays visible */
+            background-position: center 25%; /* Adjusted to keep ridge in view on wide screens */
             background-attachment: fixed; z-index: -1;
         }
 
@@ -35,7 +35,16 @@
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
         .terrain-card { overflow: hidden; position: relative; border-radius: 1.5rem; cursor: crosshair; }
-        .terrain-img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; height: 100%; object-fit: cover; }
+        
+        /* FIX: Prevent Image Distortion on Large Screens */
+        .terrain-img { 
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center;
+        }
+
         .terrain-card:hover .terrain-img { transform: scale(1.1); }
         .terrain-overlay { 
             background: linear-gradient(to top, rgba(6, 78, 59, 0.9) 0%, rgba(6, 78, 59, 0.4) 40%, transparent 100%); 
@@ -43,7 +52,6 @@
         }
         .terrain-card:hover .terrain-overlay { opacity: 1; }
 
-        /* Premium Social Hover */
         .social-link { 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             display: flex; align-items: center; justify-content: center;
@@ -51,21 +59,17 @@
         }
         .social-link:hover { background: var(--emerald); color: white; border-color: var(--emerald); transform: translateY(-5px); }
 
-        /* Sticky Form Handling */
         .sticky-box { transition: transform 0.1s linear; }
 
-        /* Navigation indicator classes */
         .nav-active { color: var(--emerald) !important; }
         .nav-active span { width: 100% !important; }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .hero-bg { background-attachment: scroll; }
+        @media (max-width: 1024px) {
+            .hero-bg { background-attachment: scroll; background-position: center center; }
             .hero-h1 { font-size: 4rem; }
         }
 
-        /* New: Suggestions Overlay Styling */
-        .landmark-card { transition: all 0.5s ease; border-right: 1px solid #f1f5f9; padding: 0 2rem; }
+        .landmark-card { transition: all 0.5s ease; border-right: 1px solid #f1f5f9; padding: 0 3.5rem; }
         .landmark-card:last-child { border: none; }
         .landmark-card:hover { transform: translateY(-5px); opacity: 1 !important; }
     </style>
@@ -85,7 +89,7 @@
             </div>
         </div>
         
-        <div id="main-nav" class="hidden lg:flex space-x-12 text-[10px] uppercase tracking-widest font-bold text-slate-600">
+        <div id="main-nav" class="hidden lg:flex space-x-12 text-[13px] uppercase tracking-widest font-bold text-slate-600">
             <a href="#connectivity" class="nav-link hover:text-emerald-700 transition relative group">Access<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
             <a href="#terrain" class="nav-link hover:text-emerald-700 transition relative group">Terroir<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
             <a href="#location" class="nav-link hover:text-emerald-700 transition relative group">Map<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all group-hover:w-full"></span></a>
@@ -93,24 +97,32 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <button class="hidden md:block text-[9px] uppercase font-bold tracking-widest text-emerald-900 border border-emerald-900 px-5 py-2 hover:bg-emerald-50 transition">Master Plan</button>
             <button onclick="document.getElementById('inquiryForm').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-900 text-white px-7 py-2.5 text-[10px] uppercase font-bold tracking-widest hover:bg-slate-900 transition-all shadow-xl">Acquire</button>
         </div>
     </nav>
 
-    <header id="hero-header" class="relative h-[90vh] flex items-center justify-center overflow-hidden">
+    <header id="hero-header" class="relative h-screen flex items-center justify-center overflow-hidden">
         <div class="hero-bg"></div>
         <div class="relative z-10 text-center px-6">
             <div class="inline-flex items-center gap-3 mb-8 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full">
                 <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
                 <span class="text-white text-[9px] uppercase tracking-[0.3em] font-medium">Biophillic | Sustainable Residential Project | Nature Getaway</span>
             </div>
-            <h1 class="text-6xl md:text-9xl serif text-white mb-8 leading-none hero-h1">The Earth Projects</h1>
+            <h1 class="text-6xl md:text-9xl serif text-white mb-8 leading-none hero-h1">The Earth Projects<br><span class="italic font-light text-emerald-50">Legacy.</span></h1>
             <p class="text-emerald-50/80 text-xs md:text-sm max-w-lg mx-auto leading-relaxed mb-10 tracking-wide font-light">Owning a Piece of the Highest Ridge on the Deccan Plateau—Where the Air is Pure and The Wealth is Permanent.</p>
-            <div class="flex justify-center gap-12 text-white/60 text-[10px] uppercase tracking-[0.4em] font-bold">
-                <div class="flex flex-col items-center"><span>920m</span><span class="text-[8px] font-normal opacity-50 mt-1">Altitude</span></div>
-                <div class="flex flex-col items-center"><span>12 KM</span><span class="text-[8px] font-normal opacity-50 mt-1">From RRR</span></div>
-                <div class="flex flex-col items-center"><span>Pure</span><span class="text-[8px] font-normal opacity-50 mt-1">Air Index</span></div>
+           <div class="flex justify-center gap-16 text-white text-[14px] uppercase tracking-[0.4em] font-bold">
+                <div class="flex flex-col items-center">
+                    <span>920m</span>
+                    <span class="text-[9px] font-medium opacity-60 mt-2 tracking-[0.2em]">Altitude</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span>12 KM</span>
+                    <span class="text-[9px] font-medium opacity-60 mt-2 tracking-[0.2em]">From RRR</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span>Pure</span>
+                    <span class="text-[9px] font-medium opacity-60 mt-2 tracking-[0.2em]">Air Index</span>
+                </div>
             </div>
         </div>
     </header>
@@ -159,16 +171,23 @@
                                 "The Earth Projects Terroir is defined by its deep red laterite soil—porous, mineral-rich, and perfectly drained. This is where nature meets legacy investment."
                             </p>
                         </div>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="p-8 bg-emerald-900 text-white rounded-[2rem] text-center">
-                                <span class="block text-[9px] uppercase font-bold text-emerald-300 mb-3 tracking-widest">Altitude</span>
-                                <span class="serif text-3xl">920m</span>
-                                <span class="serif text-3xl">Climate Air</span>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="group p-10 bg-[#064E3B] text-white rounded-[3rem] text-center flex flex-col justify-center items-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                                <span class="block text-[10px] uppercase font-bold text-emerald-300/80 mb-6 tracking-[0.4em]">Altitude</span>
+                                <div class="relative">
+                                    <span class="serif text-5xl md:text-6xl block mb-2">920m</span>
+                                    <div class="h-px w-12 bg-emerald-400/30 mx-auto mb-2"></div>
+                                    <span class="text-[10px] uppercase tracking-widest font-light opacity-60">Above Sea Level</span>
+                                </div>
                             </div>
-                            <div class="p-8 bg-emerald-50 border border-emerald-100 rounded-[2rem] text-center">
-                                <span class="block text-[9px] uppercase font-bold text-emerald-900 mb-3 tracking-widest">Soil Type</span>
-                                <span class="serif text-3xl text-emerald-800">Laterite</span>
-                                <span class="serif text-3xl text-emerald-800">Fertility Stability</span>
+
+                            <div class="group p-10 bg-[#F0FDF4] border border-emerald-100 rounded-[3rem] text-center flex flex-col justify-center items-center shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-md">
+                                <span class="block text-[10px] uppercase font-bold text-emerald-800/80 mb-6 tracking-[0.4em]">Soil Type</span>
+                                <div class="relative">
+                                    <span class="serif text-4xl md:text-5xl text-emerald-900 block mb-2 italic">Laterite</span>
+                                    <div class="h-px w-12 bg-emerald-900/10 mx-auto mb-2"></div>
+                                    <span class="text-[10px] uppercase tracking-widest font-light text-emerald-700/60">Mineral Rich</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -204,11 +223,11 @@
                             <span class="text-[10px] uppercase tracking-[0.5em] font-bold text-emerald-800 mb-2 block">Map Coordinates</span>
                             <h3 class="text-4xl md:text-6xl serif italic text-emerald-900">Live Location.</h3>
                         </div>
-                        <a href="https://goo.gl/maps/uC5E6H7XyX62" target="_blank" class="px-8 py-4 rounded-full bg-emerald-900 text-white text-[10px] uppercase font-bold tracking-widest hover:bg-black transition-all">Navigate</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=17.3400,77.8500" target="_blank" class="px-8 py-4 rounded-full bg-emerald-900 text-white text-[10px] uppercase font-bold tracking-widest hover:bg-black transition-all">Navigate</a>
                     </div>
                     <div class="w-full h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121852.12871465243!2d77.818449635031!3d17.369528659632863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc95f6f32e4d0cb%3A0xc398f6d3f2a1b9c7!2sVikarabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin2" 
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15233.19036980962!2d77.85!3d17.34!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1709500000000!5m2!1sen!2sin" 
                             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
                         </iframe>
                     </div>
@@ -279,9 +298,6 @@
                 </div>
 
                 <div class="group p-12 bg-emerald-900 rounded-[3rem] text-center text-white shadow-3xl scale-105 border border-emerald-700 flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-8 opacity-10">
-                        
-                    </div>
                     <div>
                         <div class="inline-block px-5 py-2 bg-emerald-800 rounded-full text-[9px] tracking-[0.3em] uppercase mb-8 font-bold">Primary Holding</div>
                         <h4 class="serif text-2xl mb-6 italic font-bold">Legacy Full-Acre</h4>
@@ -310,25 +326,25 @@
         </div>
     </section>
 
-    <div class="bg-white py-20 border-t border-slate-50">
+    <div class="bg-white py-24 border-t border-slate-50">
         <div class="max-w-7xl mx-auto px-6">
-            <p class="text-[9px] uppercase tracking-[0.5em] font-bold text-center text-slate-400 mb-12">Strategic Neighborhood Nodes</p>
-            <div class="flex flex-wrap justify-center gap-y-12">
+            <p class="text-[10px] uppercase tracking-[0.5em] font-bold text-center text-slate-400 mb-16">Strategic Neighborhood Nodes</p>
+            <div class="flex flex-wrap justify-center gap-y-16">
                 <div class="landmark-card opacity-60">
-                    <span class="serif text-2xl text-emerald-900">Ananthagiri</span>
-                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">ECO-RESERVE</span>
+                    <span class="serif text-3xl text-emerald-900">Ananthagiri</span>
+                    <span class="block text-[11px] font-bold tracking-[0.2em] text-emerald-600 mt-2">ECO-RESERVE</span>
                 </div>
                 <div class="landmark-card opacity-60">
-                    <span class="serif text-2xl text-emerald-900">RRR Phase 1</span>
-                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">INFRA-CORRIDOR</span>
+                    <span class="serif text-3xl text-emerald-900">RRR Phase 1</span>
+                    <span class="block text-[11px] font-bold tracking-[0.2em] text-emerald-600 mt-2">INFRA-CORRIDOR</span>
                 </div>
                 <div class="landmark-card opacity-60">
-                    <span class="serif text-2xl text-emerald-900">Kotepally</span>
-                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">KAYAKING DESTINATION</span>
+                    <span class="serif text-3xl text-emerald-900">Kotepally</span>
+                    <span class="block text-[11px] font-bold tracking-[0.2em] text-emerald-600 mt-2">KAYAKING DESTINATION</span>
                 </div>
                 <div class="landmark-card opacity-60">
-                    <span class="serif text-2xl text-emerald-900">Belvedere</span>
-                    <span class="block text-[8px] font-bold tracking-widest text-emerald-600">LUXURY RESORT</span>
+                    <span class="serif text-3xl text-emerald-900">Belvedere</span>
+                    <span class="block text-[11px] font-bold tracking-[0.2em] text-emerald-600 mt-2">LUXURY RESORT</span>
                 </div>
             </div>
         </div>
@@ -376,11 +392,11 @@
         const injectEnvironmentData = () => {
             const heroText = document.querySelector('#hero-header p');
             const envDiv = document.createElement('div');
-            envDiv.className = "flex gap-6 mt-8 justify-center";
+            envDiv.className = "flex gap-12 mt-8 justify-center mb-6"; 
             envDiv.innerHTML = `
                 <div class="flex items-center gap-2">
                     <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-                    <span class="text-[10px] text-white/70 uppercase tracking-[0.2em] font-bold">Live AQI: 38 (Excellent)</span>
+                    <span class="text-[10px] text-white/70 uppercase tracking-[0.2em] font-bold">Live AQI: 38</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
@@ -393,12 +409,10 @@
     </script>
 
     <script>
-        // Force scroll to top on page load/refresh
         window.onbeforeunload = function () { window.scrollTo(0, 0); };
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0,0);
 
-        // Navigation Highlight (Scroll Spy)
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-link');
         const locDisplay = document.getElementById('dynamic-location');
@@ -417,7 +431,6 @@
                 }
             });
 
-            // Dynamic Location Text
             if (current === 'connectivity') locDisplay.innerText = 'Ridge Access Points';
             else if (current === 'terrain') locDisplay.innerText = 'The Earth Projects Terroir';
             else if (current === 'location') locDisplay.innerText = '920m Elevation Map';
@@ -425,7 +438,6 @@
             else locDisplay.innerText = 'Ridge Road, 920m Elevation';
         });
 
-        // Form Logic
         const dateInput = document.getElementById('visitDate');
         if(dateInput) dateInput.min = new Date().toISOString().split('T')[0];
 
@@ -442,7 +454,6 @@
             document.getElementById('successView').classList.remove('hidden');
         });
 
-        // Smart Sticky Behavior
         const asideBox = document.querySelector('.sticky-box');
         const footerElement = document.querySelector('footer');
 
@@ -459,7 +470,6 @@
             }
         });
 
-        // Intersection Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
@@ -470,7 +480,6 @@
         const form = document.getElementById('inquiryForm');
         const inputs = form.querySelectorAll('div.relative, div:has(label)');
         
-        // Hide later steps initially to create a 'guided' feel
         inputs.forEach((input, index) => {
             if(index > 0) {
                 input.style.display = 'none';
@@ -479,7 +488,6 @@
             }
         });
 
-        // Reveal next steps as the user interacts
         form.addEventListener('input', (e) => {
             const currentDiv = e.target.closest('div.relative') || e.target.closest('div:has(label)');
             if (currentDiv) {
